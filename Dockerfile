@@ -20,9 +20,9 @@ RUN mkdir $DATA_DIR	&& \
 
 ADD /scripts/ /opt/scripts/
 RUN chmod -R 770 /opt/scripts/ && \
-	chown -R discord /opt/scripts/ && \
+	chown -R discord /opt/scripts/
 
-USER rpdiscordd
+USER discord
 
 #Server Start
 ENTRYPOINT ["/opt/scripts/start-server.sh"]
