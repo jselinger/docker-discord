@@ -7,7 +7,6 @@ RUN rm -rf /var/lib/apt/lists/* && \
 
 ENV DATA_DIR=/discord
 ENV DL_URL="https://discordapp.com/api/download?platform=linux&format=tar.gz"
-ENV FORCE_UPDATE=""
 ENV CUSTOM_RES_W=800
 ENV CUSTOM_RES_H=600
 ENV UMASK=000
