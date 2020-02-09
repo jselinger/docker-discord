@@ -54,16 +54,16 @@ if [ -z "${CUSTOM_RES_W} ]; then
 	CUSTOM_RES_W=1000
 fi
 if [ -z "${CUSTOM_RES_H} ]; then
-	CUSTOM_RES_H=700
+	CUSTOM_RES_H=768
 fi
 
 if [ "${CUSTOM_RES_W}" -le 999 ]; then
 	echo "---Width to low must be a minimal of 1000 pixels, correcting to 1000...---"
     CUSTOM_RES_W=1000
 fi
-if [ "${CUSTOM_RES_H}" -le 699 ]; then
-	echo "---Height to low must be a minimal of 700 pixels, correcting to 700...---"
-    CUSTOM_RES_H=700
+if [ "${CUSTOM_RES_H}" -le 767 ]; then
+	echo "---Height to low must be a minimal of 768 pixels, correcting to 768...---"
+    CUSTOM_RES_H=768
 fi
 sed -i '/"width": /c\    "width": '${CUSTOM_RES_W}',' "${DATA_DIR}/.config/discord/settings.json"
 sed -i '/ "height": /c\    "height": '${CUSTOM_RES_H}'' "${DATA_DIR}/.config/discord/settings.json"
