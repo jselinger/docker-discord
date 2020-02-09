@@ -41,7 +41,7 @@ if [ ! -f ${DATA_DIR}/.config/discord/settings.json ]; then
   "IS_MINIMIZED": false,
   "WINDOW_BOUNDS": {
     "x": 0,
-    "y": 24,
+    "y": 0,
     "width": 1024,
     "height": 720
   }
