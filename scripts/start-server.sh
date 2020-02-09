@@ -26,7 +26,47 @@ else
 fi
 
 echo "---Preparing Server---"
+echo "---Checking if config file is present---"
+if [ ! -f ${DATA_DIR}/.config/discord/settings.json ]; then
+	echo "---Config file not present, creating...---"
+	if [ ! -d ${DATA_DIR}/.config/ ]; then
+    	mkdir ${DATA_DIR}/.config/
+	fi
+	if [ ! -d ${DATA_DIR}/.config/discord ]; then
+    	mkdir ${DATA_DIR}/.config/discord
+	fi
+	touch "${DATA_DIR}/.config/discord/settings.json"
+	echo '{
+  "IS_MAXIMIZED": false,
+  "IS_MINIMIZED": false,
+  "WINDOW_BOUNDS": {
+    "x": 0,
+    "y": 24,
+    "width": 1024,
+    "height": 720
+  }
+}' >> "${DATA_DIR}/.config/discord/settings.json"
+else
+	echo "---Config file found!---"
+fi
+echo "---Resolution check---"
+if [ -z "${CUSTOM_RES_W} ]; then
+	CUSTOM_RES_W=1000
+fi
+if [ -z "${CUSTOM_RES_H} ]; then
+	CUSTOM_RES_H=700
+fi
 
+if [ "${CUSTOM_RES_W}" -le 999 ]; then
+	echo "---Width to low must be a minimal of 1000 pixels, correcting to 1000...---"
+    CUSTOM_RES_W=1000
+fi
+if [ "${CUSTOM_RES_H}" -le 699 ]; then
+	echo "---Height to low must be a minimal of 700 pixels, correcting to 700...---"
+    CUSTOM_RES_H=700
+fi
+sed -i '/"width": /c\    "width": '${CUSTOM_RES_W}',' "${DATA_DIR}/.config/discord/settings.json"
+sed -i '/ "height": /c\    "height": '${CUSTOM_RES_H}'' "${DATA_DIR}/.config/discord/settings.json"
 echo "---Checking for old logfiles---"
 find $DATA_DIR -name "XvfbLog.*" -exec rm -f {} \; > /dev/null 2>&1
 find $DATA_DIR -name "x11vncLog.*" -exec rm -f {} \; > /dev/null 2>&1
@@ -35,9 +75,7 @@ find /tmp -name ".X99*" -exec rm -f {} \; > /dev/null 2>&1
 if [ ! -x "${DATA_DIR}/Discord" ]; then
 	chown -x ${DATA_DIR}/Discord
 fi
-
 chmod -R 777 ${DATA_DIR}
-
 sleep 2
 
 echo "---Starting Xvfb server---"
@@ -52,13 +90,6 @@ echo "---Starting noVNC server---"
 websockify -D --web=/usr/share/novnc/ --cert=/etc/ssl/novnc.pem 8080 localhost:5900
 sleep 2
 
-echo "---Sleep zZz---"
-sleep infinity
-
 echo "---Starting Discord---"
 cd ${DATA_DIR}
-while true; do
-	sudo ${DATA_DIR}/Discord
-    echo "---Discord crashed respawning---"
-	sleep 5
-done
+${DATA_DIR}/Discord
