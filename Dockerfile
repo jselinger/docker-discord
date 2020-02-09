@@ -5,7 +5,8 @@ LABEL maintainer="admin@minenet.at"
 RUN apt-get update && \
 	apt-get -y install --no-install-recommends libnss3 libgtk-3-0 libasound2 && \
 	rm -rf /var/lib/apt/lists/* && \
-	sed -i '/    document.title =/c\    document.title = "Discord - noVNC";' /usr/share/novnc/app/ui.js
+	sed -i '/    document.title =/c\    document.title = "Discord - noVNC";' /usr/share/novnc/app/ui.js && \
+	rm /usr/share/novnc/app/images/icons/*
 
 ENV DATA_DIR=/discord
 ENV DL_URL="https://discordapp.com/api/download?platform=linux&format=tar.gz"
@@ -21,6 +22,7 @@ RUN mkdir $DATA_DIR	&& \
 	ulimit -n 2048
 
 ADD /scripts/ /opt/scripts/
+COPY /icons/* /usr/share/novnc/app/images/icons/
 RUN chmod -R 770 /opt/scripts/ && \
 	chown -R discord /opt/scripts/
 
