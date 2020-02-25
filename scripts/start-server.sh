@@ -1,8 +1,6 @@
 #!/bin/bash
 export LANG=en_US.UTF-8
 export DISPLAY=:99
-echo "---Setting umask to ${UMASK}---"
-umask ${UMASK}
 
 echo "---Checking if Discord is installed---"
 if [ ! -f ${DATA_DIR}/Discord ]; then
@@ -75,7 +73,7 @@ find /tmp -name ".X99*" -exec rm -f {} \; > /dev/null 2>&1
 if [ ! -x "${DATA_DIR}/Discord" ]; then
 	chown -x ${DATA_DIR}/Discord
 fi
-chmod -R 777 ${DATA_DIR}
+chmod -R ${DATA_PERM} ${DATA_DIR}
 sleep 2
 
 echo "---Starting Xvfb server---"
